@@ -3,7 +3,7 @@
 </script>
 <template>
     <div>
-        <h1>Character ID</h1>
+            <h1>Character List</h1>
     </div>
 </template>
 
