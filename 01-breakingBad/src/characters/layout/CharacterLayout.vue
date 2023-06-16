@@ -22,7 +22,10 @@ const routeLinks: RouterLink[] = characterRoute.children!
             <NavBar :show-icon=false :links="routeLinks" />
 
             <!-- RouterView + Suspense -->
-            <RouterView />
+                <Suspense>
+
+                    <RouterView />
+                </Suspense>
     </div>
 </template>
 
