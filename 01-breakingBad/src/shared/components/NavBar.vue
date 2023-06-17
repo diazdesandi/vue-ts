@@ -26,12 +26,12 @@ const props = withDefaults(defineProps<Props>(),
 </script>
 <template>
     <nav>
-                    <img v-if="props.showIcon" src="@/assets/logo.svg" alt="Vue logo" height="25" width="25">
-                    <span>{{ props.title || 'No title' }}</span>
-                    <!-- <RouterLink to="/">Inicio</RouterLink>
+            <img v-if="props.showIcon" src="@/assets/logo.svg" alt="Vue logo" height="25" width="25">
+            <span v-if="props.title">{{ props.title }}</span>
+            <!-- <RouterLink to="/">Inicio</RouterLink>
                                         <RouterLink to="/about">Sobre</RouterLink> -->
 
-                    <RouterLink v-for="link of props.links" :key="link.path" :to="link.path">{{ link.title }}</RouterLink>
+            <RouterLink v-for="link of props.links" :key="link.path" :to="link.path">{{ link.title }}</RouterLink>
     </nav>
 </template>
 
