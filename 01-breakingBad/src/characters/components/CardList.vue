@@ -1,26 +1,23 @@
 <script setup lang="ts">
-import rickMortyApi from "@/api/rickMortyApi";
-import type { Character, Results } from "../interfaces/character";
-import { ref } from "vue";
+// import rickMortyApi from "@/api/rickMortyApi";
+// import type { Character, Results } from "../interfaces/character";
+// import { ref } from "vue";
+import { useCharacters } from "../composable/useCharacters";
 
-const { data } = await rickMortyApi.get<Results>("/character")
-const { results } = data;
-console.log(results)
+// const { data } = await rickMortyApi.get<Results>("/character");
+// const { results } = data;
+// console.log(results);
 
 // const characters = ref<Character[]>(data.results);
-// const characters = ref<Character[]>([]);
 
-
-/*
-rickMortyApi.get<Results>("/character").then((resp) => {
-    characters.value = resp.data.results;
-});
-*/
+const { isLoading, characters, hasError, errorMessage } = useCharacters();
 </script>
 <template>
-    <ul>
-            <!-- <li v-for="{ id, name } of characters" :key="id">{{ name }}</li> -->
-            <li v-for="{ id, name } of results" :key="id">{{ name }}</li>
+        <h1 v-if="isLoading">Loading...</h1>
+        <h1 v-if="hasError">{{ errorMessage }}</h1>
+        <ul>
+            <li v-for="{ id, name } of characters" :key="id">{{ name }}</li>
+            <!-- <li v-for="{ id, name } of results" :key="id">{{ name }}</li> -->
     </ul>
 </template>
 
