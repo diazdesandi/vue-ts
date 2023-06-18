@@ -17,7 +17,7 @@ const getCharacterCache = async (characterID: string): Promise<Character> => {
   const { data } = await rickMortyApi.get<Character>(
     `/character/${characterID}`
   );
-  console.log(data);
+  // console.log(data);
   return data;
 };
 
