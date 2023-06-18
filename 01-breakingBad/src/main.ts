@@ -7,6 +7,11 @@ import { VueQueryPlugin } from "@tanstack/vue-query";
 
 const app = createApp(App);
 
+// Carga y uso del store
+import characterStore from "@/store/characters.store";
+
+characterStore;
+
 // VueQueryPlugin Global
 VueQueryPlugin.install(app, {
   queryClientConfig: {
