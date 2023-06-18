@@ -11,10 +11,24 @@ interface Store {
     list: Character[];
   };
 
-  // Métodos
+  ids: {
+    errorMessage: string | null;
+    hasError: boolean;
+    isLoading: boolean;
+    list: {
+      [id: string]: Character;
+    };
+  };
+
+  // Métodos de Characters
   startLoadingCharacters: () => void;
   loadCharacters: (data: Character[]) => void;
   loadCharactersFailed: (error: string) => void;
+
+  // Métodos de Characters por ID
+  startLoadingCharacter: () => void;
+  loadedCharacter: (character: Character) => void;
+  checkIdStore: (id: string) => boolean; // Getter
 }
 
 // Initial State | Estado Inicial de la store
@@ -26,6 +40,14 @@ const characterStore = reactive<Store>({
     isLoading: true,
     list: [],
   },
+
+  ids: {
+    errorMessage: null,
+    hasError: false,
+    isLoading: false,
+    list: {},
+  },
+
   // Métodos
   async startLoadingCharacters() {
     // console.log("StartLoadingCharacters");
@@ -55,6 +77,22 @@ const characterStore = reactive<Store>({
       isLoading: false,
       list: [],
     };
+  },
+
+  // Métodos por ID
+  startLoadingCharacter() {
+    this.ids = {
+      ...this.ids,
+      isLoading: true,
+      hasError: false,
+      errorMessage: null,
+    };
+  },
+  loadedCharacter(character: Character) {
+    (this.ids.isLoading = false), (this.ids.list[character.id] = character);
+  },
+  checkIdStore(id: string) {
+    return !!this.ids.list[id];
   },
 });
 
