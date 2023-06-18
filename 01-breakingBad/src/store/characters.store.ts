@@ -1,4 +1,5 @@
-import type { Character } from "@/characters/interfaces/character";
+import rickMortyApi from "@/api/rickMortyApi";
+import type { Character, Results } from "@/characters/interfaces/character";
 import { reactive } from "vue";
 
 interface Store {
@@ -26,11 +27,18 @@ const characterStore = reactive<Store>({
     list: [],
   },
   // Métodos
-  startLoadingCharacters() {
+  async startLoadingCharacters() {
     // console.log("StartLoadingCharacters");
+    const { data } = await rickMortyApi.get<Results>("/character");
+    this.loadCharacters(data.results);
   },
   loadCharacters(data: Character[]) {
-    // this.characters.count = data.length;
+    if (typeof data === "string") {
+      return this.loadCharactersFailed(
+        "Respuesta no es un arreglo de personajes"
+      );
+    }
+
     this.characters = {
       count: data.length,
       errorMessage: null,
@@ -39,7 +47,15 @@ const characterStore = reactive<Store>({
       list: data,
     };
   },
-  loadCharactersFailed(error: string) {},
+  loadCharactersFailed(error: string) {
+    this.characters = {
+      count: 0,
+      errorMessage: error,
+      hasError: true,
+      isLoading: false,
+      list: [],
+    };
+  },
 });
 
 characterStore.startLoadingCharacters();
