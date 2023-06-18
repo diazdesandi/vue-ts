@@ -24,7 +24,7 @@ const getCharactersSlow = async (): Promise<Character[]> => {
     setTimeout(async () => {
       const { data } = await rickMortyApi.get<Results>("/character");
       // console.log(data.results)
-      const {results} =data;
+      const { results } = data;
       resolve(results);
     }, 1000);
   });
@@ -33,12 +33,7 @@ const getCharactersSlow = async (): Promise<Character[]> => {
   //   return data.results;
 };
 
-const {
-  isLoading,
-  isError,
-  data,
-  error,
-} = useQuery(
+const { isLoading, isError, data, error } = useQuery(
   // Elemento que se quiere mantener en cache:
   ["characters"],
   // Función para obtener los datos
@@ -47,18 +42,18 @@ const {
   {
     cacheTime: 1000 * 60,
     refetchOnReconnect: "always",
-  },
+  }
 );
 </script>
 <template>
   <h1 v-if="isLoading">Loading...</h1>
   <!-- <h1 v-if="isError">{{ error }}</h1> -->
-  <div class="class-list">
+  <div class="card-list">
     <CharacterCard
       v-for="character of data"
       :key="character.id"
       :character="character"
-      />
+    />
   </div>
   <!-- <ul>
     <li v-for="{ id, name } of data" :key="id">{{ name }}</li> -->

@@ -17,8 +17,7 @@ import { routeLinks } from './router/link-routes';
 
 <style scoped>
 .wrapper {
-  /* display: flex; */
-  place-items: flex-start;
-  flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
 }
 </style>
