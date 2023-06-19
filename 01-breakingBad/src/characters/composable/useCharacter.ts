@@ -10,8 +10,13 @@ const errorMessage = ref<string | null>(null);
 const getCharacter = async (id: string): Promise<Character> => {
   if (characterSet.value[id]) return characterSet.value[id];
 
-  const { data } = await rickMortyApi.get<Character>(`/character/${id}`);
-  return data;
+  try {
+    const { data } = await rickMortyApi.get<Character>(`/characters/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error");
+  }
 };
 
 const loadedCharacter = (character: Character) => {
@@ -20,16 +25,22 @@ const loadedCharacter = (character: Character) => {
   characterSet.value[character.id] = character;
 };
 
+const loadedWithError = (error: string) => {
+  hasError.value = true;
+  errorMessage.value = error;
+};
+
 const useCharacter = (id: string) => {
   const { isLoading } = useQuery(["characters", id], () => getCharacter(id), {
     onSuccess: loadedCharacter,
-    // TODO: manejar error
+    onError: loadedWithError,
   });
 
   return {
     // Properties
     list: characterSet,
     hasError,
+    isLoading,
     errorMessage,
     // Getters
     character: computed<Character | null>(() => characterSet.value[id]),
