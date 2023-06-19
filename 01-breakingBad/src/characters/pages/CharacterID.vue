@@ -1,42 +1,20 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import type { Character } from "../interfaces/character";
-import characterStore from "@/store/characters.store";
-import rickMortyApi from "@/api/rickMortyApi";
-import { useQuery } from "@tanstack/vue-query";
+import useCharacter from "../composable/useCharacter";
 
 const route = useRoute();
 
 const { id } = route.params as { id: string };
 
-const getCharacterCache = async (characterID: string): Promise<Character> => {
-  if (characterStore.checkIdStore(characterID)) {
-    return characterStore.ids.list[characterID];
-  }
-
-  const { data } = await rickMortyApi.get<Character>(
-    `/character/${characterID}`
-  );
-  // console.log(data);
-  return data;
-};
-
-const { isLoading, data: character } = useQuery(
-  ["characters", id],
-  () => getCharacterCache(id),
-  {
-    onSuccess(character) {
-      characterStore.loadedCharacter(character);
-    },
-  }
-);
+const { character, hasError, errorMessage } = useCharacter(id);
 </script>
 <template>
-  <h1 v-if="isLoading || !character">Loading...</h1>
+  <h1 v-if="!character">Loading...</h1>
+  <h1 v-else-if="hasError">{{ errorMessage }}</h1>
   <div v-else>
     <h1>{{ character.name }} #{{ id }}</h1>
     <div class="character-container">
-      <img :src="character.image" :alt="character.name">
+      <img :src="character.image" :alt="character.name" />
       <ul>
         <li>Estatus: {{ character.status }}</li>
         <li>Especie: {{ character.species }}</li>
@@ -57,5 +35,4 @@ img {
   width: 150px;
   border-radius: 5px;
 }
-
 </style>
