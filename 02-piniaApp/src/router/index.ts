@@ -1,4 +1,4 @@
-import Counter1Value from "@/counter/pages/Counter1Value.vue";
+import Counter1Page from "@/counter/pages/Counter1Page.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -7,7 +7,7 @@ const router = createRouter({
     {
       path: "/",
       name: "counter-1",
-      component: Counter1Value,
+      component: Counter1Page,
     },
   ],
 });
