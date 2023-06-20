@@ -1,4 +1,5 @@
-import Counter1Page from "@/counter/pages/Counter1Page.vue";
+import CounterOptions from "@/counter/pages/CounterOptionsPage.vue";
+import CounterSetup from "@/counter/pages/CounterSetupPage.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -6,8 +7,13 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "counter-1",
-      component: Counter1Page,
+      name: "counter-options",
+      component: CounterOptions,
+    },
+    {
+      path: "/counter-setup",
+      name: "counter-setup",
+      component: CounterSetup,
     },
   ],
 });
