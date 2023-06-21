@@ -1,6 +1,6 @@
 import type { Client } from "@/clients/interfaces/client";
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 
 export const useClientsStore = defineStore("clients", () => {
   const currentPage = ref<number>(1);
@@ -23,6 +23,7 @@ export const useClientsStore = defineStore("clients", () => {
     },
     setPage(page: number) {
       if (currentPage.value === page) return;
+      if (page <= 0) return;
       currentPage.value = page;
     },
 
