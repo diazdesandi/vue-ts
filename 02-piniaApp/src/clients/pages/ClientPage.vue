@@ -1,47 +1,42 @@
 <script setup lang="ts">
 import LoadingModal from "@/shared/components/LoadingModal.vue";
 import useClient from "@/clients/composables/useClient";
-import { useRoute } from "vue-router";
-import { useMutation } from "@tanstack/vue-query";
-import type { Client } from "../interfaces/client";
-import clientsApi from "@/api/clients-api";
+import { useRoute, useRouter } from "vue-router";
 import { watch } from "vue";
 
 const route = useRoute();
+const router = useRouter();
+// const queryClient = useQueryClient();
 
-const { isLoading, client } = useClient(+route.params.id);
-
-// Actualizando cliente
-const updateClient = async (client: Client): Promise<Client> => {
-  await new Promise((resolve) => {
-    setTimeout(() => resolve(true), 1500);
-  });
-
-  const { id, ...rest } = client;
-
-  const { data } = await clientsApi.patch<Client>(`/clients/${id}`, rest);
-  return data;
-};
-
-const clientMutation = useMutation(updateClient);
-
-// Eliminar anuncio "Guardado! y "Guardando..."
+const {
+  client,
+  isError,
+  isLoading,
+  clientMutation,
+  updateClient,
+  isUpdating,
+  isUpdatingSuccess,
+} = useClient(+route.params.id);
 
 watch(clientMutation.isSuccess, () => {
   setTimeout(() => {
     clientMutation.reset();
   }, 2000);
 });
+
+watch(isError, () => {
+  if (isError.value) router.replace("/clients");
+});
 </script>
 <template>
-  <h3 v-if="clientMutation.isLoading.value">Guardando...</h3>
-  <h3 v-if="clientMutation.isSuccess.value">Guardado!</h3>
+  <h3 v-if="isUpdating">Guardando...</h3>
+  <h3 v-if="isUpdatingSuccess">Guardado!</h3>
 
   <LoadingModal v-if="isLoading" />
 
   <div v-if="client">
     <h1>{{ client.name }}</h1>
-    <form @submit.prevent="clientMutation.mutate(client)">
+    <form @submit.prevent="updateClient(client)">
       <input type="text" placeholder="Nombre" v-model="client.name" />
       <br />
       <input type="text" placeholder="Dirección" v-model="client.address" />

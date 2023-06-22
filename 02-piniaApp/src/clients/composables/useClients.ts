@@ -32,11 +32,15 @@ const useClients = () => {
 
   // data es reactiva, entonces al existir un cambio,
   // se actualizan los cambios en la store.
-  watch(data, (clients) => {
-    if (clients) {
-      store.setClients(clients);
-    }
-  });
+  watch(
+    data,
+    (clients) => {
+      if (clients) {
+        store.setClients(clients);
+      }
+    },
+    { immediate: true }
+  );
 
   return {
     clients,
