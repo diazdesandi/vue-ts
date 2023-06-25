@@ -20,9 +20,9 @@ const { issueQuery, issueCommentsQuery } = useIssue(+id);
   <IssueCard v-else-if="issueQuery.data.value" :issue="issueQuery.data.value" />
   <p v-else>Issue #{{ id }} not found</p>
   <!-- Comentarios -->
-  <LoaderSpinner :thickness="1" size="1.5rem" :show-text="false" />
+  <LoaderSpinner v-if="issueCommentsQuery.isLoading.value" :thickness="1" size="1.5rem" :show-text="false" />
 
-  <div class="column" v-if="issueCommentsQuery.data.value">
+  <div class="column" v-else-if="issueCommentsQuery.data.value">
     <span class="text-h5 q-mb-md"
       >Comments ({{ issueCommentsQuery.data.value?.length }})</span
     >
