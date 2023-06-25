@@ -23,7 +23,7 @@ const { issueQuery, issueCommentsQuery } = useIssue(+id);
   <LoaderSpinner :thickness="1" size="1.5rem" :show-text="false" />
 
   <div class="column" v-if="issueCommentsQuery.data.value">
-    <span class="text-h3 q-mb-md"
+    <span class="text-h5 q-mb-md"
       >Comments ({{ issueCommentsQuery.data.value?.length }})</span
     >
     <IssueCard
