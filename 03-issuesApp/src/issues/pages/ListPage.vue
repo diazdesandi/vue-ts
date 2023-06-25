@@ -3,8 +3,14 @@ import LoaderSpinner from 'src/shared/components/LoaderSpinner.vue';
 import FilterSelector from '../components/filter-selector/FilterSelector.vue';
 import IssueList from 'src/issues/components/issue-list/IssueList.vue';
 import useIssues from '../composables/useIssues';
+import FloatingButtons from '../components/FloatingButtons.vue';
+import NewIssueDialog from '../components/NewIssueDialog.vue';
 
 const { issuesQuery } = useIssues();
+
+const listPageClickTemp = () => {
+  console.log('ListPageClickTemp');
+};
 </script>
 <template>
   <div class="row q-mb-md">
@@ -15,7 +21,6 @@ const { issuesQuery } = useIssues();
 
   <div class="row">
     <div class="col-xs-12 col-md-4">
-      <!-- TODO: Filtros -->
       <FilterSelector />
     </div>
 
@@ -24,6 +29,23 @@ const { issuesQuery } = useIssues();
       <IssueList v-else :issues="issuesQuery.data?.value || []" />
     </div>
   </div>
+
+  <!-- FloatingButtons -->
+  <FloatingButtons
+    :buttons="[
+      {
+        action: listPageClickTemp,
+        color: 'primary',
+        icon: 'add',
+        size: 'lg',
+      },
+    ]"
+  />
+
+  <!-- New Issue -->
+
+  <NewIssueDialog />
+
 </template>
 
 <style scoped></style>
