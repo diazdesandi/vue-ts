@@ -5,11 +5,16 @@ import IssueList from 'src/issues/components/issue-list/IssueList.vue';
 import useIssues from '../composables/useIssues';
 import FloatingButtons from '../components/FloatingButtons.vue';
 import NewIssueDialog from '../components/NewIssueDialog.vue';
+import { ref } from 'vue';
+import useLabels from '../composables/useLabels';
 
 const { issuesQuery } = useIssues();
+const { labelsQuery } = useLabels();
 
-const listPageClickTemp = () => {
-  console.log('ListPageClickTemp');
+const isOpen = ref<boolean>(false);
+
+const openDialog = () => {
+  isOpen.value = true;
 };
 </script>
 <template>
@@ -34,7 +39,7 @@ const listPageClickTemp = () => {
   <FloatingButtons
     :buttons="[
       {
-        action: listPageClickTemp,
+        action: openDialog,
         color: 'primary',
         icon: 'add',
         size: 'lg',
@@ -44,8 +49,12 @@ const listPageClickTemp = () => {
 
   <!-- New Issue -->
 
-  <NewIssueDialog />
-
+  <NewIssueDialog
+    v-if="labelsQuery.data"
+    :is-open="isOpen"
+    :labels="labelsQuery.data.value?.map((label) => label.name) || []"
+    @on-close="isOpen = false"
+  />
 </template>
 
 <style scoped></style>
